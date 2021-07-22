@@ -2,15 +2,30 @@ const User = require('../models/user.model');
 const bcrypt = require('bcryptjs');
 
 
-const getUsers = (req, res) => {
-    const { id, name = 'No name', page } = req.query;
-    console.log(req.query);
-    res.json({
-        msg: ' get API',
-        id,
-        name,
-        page
-    });
+const getUsers = async (req, res) => {
+    try {
+        const { limit = 5, from = 0 } = req.query;
+        const query = { status: true };
+        // const users = await User.find()
+        //     .skip( Number(from) )
+        //     .limit( Number(limit) );
+        // const total = await User.countDocuments( {status: true} );
+    
+        // Reduce the request time 
+        const [ users, total ] = await Promise.all([
+            User.find( query )
+                .skip( Number(from) )
+                .limit( Number(limit) ),
+            User.countDocuments( query )
+        ]);
+    
+        res.json({
+            total,
+            users
+        });
+    } catch (error) {
+        console.log( 'getUsers() Error: ', error );
+    }
 }
 
 const postUsers = async (req, res) => {
@@ -30,16 +45,30 @@ const postUsers = async (req, res) => {
     });
 }
 
-const putUsers = (req, res) => {
+const putUsers = async (req, res) => {
+    const { id } = req.params; 
+    const { _id, google, email, password, ...restUser } = req.body;
+
+    if ( password ) {
+        const salt = bcrypt.genSaltSync(10);
+        restUser.password = bcrypt.hashSync( password, salt );
+    }
+    const user = await User.findByIdAndUpdate( id, restUser );
+
     res.json({
-        msg: ' put api'
+        msg: ' put api',
+        user
     });
 }
 
-const deleteUsers = (req, res) => {
-    res.json({
-        msg: ' delete api'
-    });
+const deleteUsers = async (req, res) => {
+    const { id } = req.params;
+    // To delete a user
+    // const user = await User.findByIdAndDelete( id );
+    
+    // To cahnge user status
+    const user = await User.findByIdAndUpdate( id, {status: false} );
+    res.json( user );
 }
 
 const patchUsers = () => {

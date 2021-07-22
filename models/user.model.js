@@ -1,5 +1,5 @@
-const { Schema, model } = require('mongoose');
 
+const { Schema, model } = require('mongoose');
 
 const userSchema = Schema({
     name: {
@@ -22,7 +22,6 @@ const userSchema = Schema({
         type: String,
         required: true,
         enumeration: ['ADMIN_ROLE, USER_ROLE']
-
     },
     status: {
         type: Boolean,
@@ -32,7 +31,6 @@ const userSchema = Schema({
         type: Boolean,
         default: false
     }
-
 });
 
 // Override toJSON function
