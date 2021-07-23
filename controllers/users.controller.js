@@ -6,6 +6,7 @@ const getUsers = async (req, res) => {
     try {
         const { limit = 5, from = 0 } = req.query;
         const query = { status: true };
+
         // const users = await User.find()
         //     .skip( Number(from) )
         //     .limit( Number(limit) );
@@ -18,7 +19,7 @@ const getUsers = async (req, res) => {
                 .limit( Number(limit) ),
             User.countDocuments( query )
         ]);
-    
+
         res.json({
             total,
             users
@@ -46,6 +47,7 @@ const postUsers = async (req, res) => {
 }
 
 const putUsers = async (req, res) => {
+   
     const { id } = req.params; 
     const { _id, google, email, password, ...restUser } = req.body;
 
@@ -63,12 +65,18 @@ const putUsers = async (req, res) => {
 
 const deleteUsers = async (req, res) => {
     const { id } = req.params;
+
+    const uid = req.uid;    // This req.uid comes from routes->middleware/validateJwt 
+    const userAuthenticated = req.userAuth; 
+
     // To delete a user
     // const user = await User.findByIdAndDelete( id );
     
-    // To cahnge user status
+    // To change user status
     const user = await User.findByIdAndUpdate( id, {status: false} );
-    res.json( user );
+    res.json({ 
+        user,
+    });
 }
 
 const patchUsers = () => {
