@@ -15,7 +15,7 @@ const { validateRole, validateEmail, validateExistenceIdUser } = require('../hel
 
 const router = Router();
 
-router.get('/', getUsers );
+router.get('/', [ validateJwt ], getUsers );
 
 router.post('/',[
         check( 'name', 'The name must not be empty.' ).not().isEmpty(),

@@ -21,6 +21,7 @@ const userSchema = Schema({
     role: {
         type: String,
         required: true,
+        default: 'USER_ROLE',
         enumeration: ['ADMIN_ROLE, USER_ROLE']
     },
     status: {
