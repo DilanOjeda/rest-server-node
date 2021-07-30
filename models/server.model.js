@@ -12,7 +12,8 @@ class Server{
         this.paths = {
             users: '/api/users',
             auth: '/api/auth',
-            categories: '/api/categories'
+            categories: '/api/categories',
+            products: '/api/products'
         }        
         // Database Connection
         this.connecToDatabase();
@@ -32,7 +33,7 @@ class Server{
         //Cors 
         this.app.use( cors() );
 
-        //
+        // Read json format
         this.app.use( express.json() );
         
         // Public Directory
@@ -42,11 +43,12 @@ class Server{
         this.app.use( this.paths.auth, require('../routes/auth.route') );
         this.app.use( this.paths.users, require('../routes/users.route') );
         this.app.use( this.paths.categories, require('../routes/categories.route') );
+        this.app.use( this.paths.products, require('../routes/products.route') );
     }
 
     listen(){
         this.app.listen(this.port, () => {
-            console.log( `It is running on port ${this.port}` );
+            console.log( `It is running on port ${ this.port }` );
         });
     }
 }

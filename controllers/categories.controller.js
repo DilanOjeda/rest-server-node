@@ -29,15 +29,15 @@ const getCategories = async (req, res) => {
 const getOneCategory = async (req, res) => {
 
     const { id } = req.params;
-    const queryStatus = { status: true };
 
     const category = await Category.findById( id ).populate( 'user', ['name'] ); 
-    console.log('category one: ', category)
+
     if( !category.status ){
         return res.status(400).json({
-            msg: `The category ID ${ id } doesn't exist. `
+            msg: `The category ID ${ id } doesn't exist.`
         });
     }
+    
     res.json({
         msg: 'Ok from getOneCategory - GET request',
         category

@@ -12,7 +12,7 @@ const validateUserRole = (req = request, res = response, next) => {
     const {name, role } = req.userAuth;
     if ( role !== 'ADMIN_ROLE' ){
         return res.status(500).json({
-            msg: `${name} is not administrator - not can do this action.`
+            msg: `${name} is not administrator - can not do this action.`
         });
     }
 
