@@ -1,6 +1,5 @@
 
-const Role = require('../models/role.model');
-const User = require('../models/user.model');
+const { Category, User, Role } = require('../models');
 
 const validateRole = async (role = '') => {           //If role is not sent, It'll receive undefined.
     const existRole = await Role.findOne({ role });
@@ -21,9 +20,17 @@ const validateExistenceIdUser = async ( id ) => {
         throw new Error( `There isn't the id ${ id } in the Database.` );
     }
 }
+const validateIdCategoryExistence = async ( id ) => {
+    const existIdCategory = await Category.findById( id );
+    if ( !existIdCategory ) {
+        throw new Error( `The category ID ${ id } you entered doesn't exist. Please check that you typed the category ID correctly.` );
+    }
+}
+
 
 module.exports = {
     validateRole,
     validateEmail,
-    validateExistenceIdUser
+    validateExistenceIdUser,
+    validateIdCategoryExistence,
 };
