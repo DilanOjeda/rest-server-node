@@ -6,11 +6,6 @@ const getUsers = async (req, res) => {
     try {
         const { limit = 5, from = 0 } = req.query;
         const query = { status: true };
-
-        // const users = await User.find()
-        //     .skip( Number(from) )
-        //     .limit( Number(limit) );
-        // const total = await User.countDocuments( {status: true} );
     
         // Reduce the request time 
         const [ users, total ] = await Promise.all([
@@ -68,9 +63,6 @@ const deleteUsers = async (req, res) => {
 
     const uid = req.uid;    // This req.uid comes from routes->middleware/validateJwt 
     const userAuthenticated = req.userAuth; 
-
-    // To delete a user
-    // const user = await User.findByIdAndDelete( id );
     
     // To change user status
     const user = await User.findByIdAndUpdate( id, {status: false} );
